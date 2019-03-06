@@ -1,0 +1,370 @@
+'scopeName': 'text.hvml'
+'name': 'HVML'
+'fileTypes': [
+  'hvml'
+  'hvml.xml'
+  'ovml'
+  'ovml.xml'
+]
+'firstLineMatch': '''(?x)
+  # XML declaration
+  (?:
+    (?:
+      ^ <\\? xml
+
+      # VersionInfo
+      \\s+ version
+      \\s* = \\s*
+      ([\'"])
+        1 \\. [0-9]+
+      \\1
+
+      # EncodingDecl
+      (?:
+        \\s+ encoding
+        \\s* = \\s*
+
+        # EncName
+        ([\'"])
+          [A-Za-z]
+          [-A-Za-z0-9._]*
+        \\2
+      )?
+
+      # SDDecl
+      (?:
+        \\s+ standalone
+        \\s* = \\s*
+        ([\'"])
+          (?:yes|no)
+        \\3
+      )?
+
+      \\s* \\?> \\s*
+    )?
+
+    # HVML opening tag
+    (?:
+      \\s* <hvml
+
+      # Attributes
+      (?:\\s
+        # Optional namespace prefixes
+        (?:[^:=<>]+:)?
+        # Attribute names with optional values, e.g. `hidden="hidden"` or `hidden`,
+        # and even optional quotes so highlighting still comes on for typos or SGML-style.
+        [^:=<>]+(?:=(["\'])?[^\\4<>]+\\4?)?
+      )*
+
+      \\s* >
+    )
+  )
+  |
+  # Modeline
+  (?i:
+    # Emacs
+    -\\*-(?:\\s*(?=[^:;\\s]+\\s*-\\*-)|(?:.*?[;\\s]|(?<=-\\*-))mode\\s*:\\s*)
+      hvml
+    (?=[\\s;]|(?<![-*])-\\*-).*?-\\*-
+    |
+    # Vim
+    (?:(?:\\s|^)vi(?:m[<=>]?\\d+|m)?|\\sex)(?=:(?=\\s*set?\\s[^\\n:]+:)|:(?!\\s*set?\\s))(?:(?:\\s|\\s*:\\s*)\\w*(?:\\s*=(?:[^\\n\\\\\\s]|\\\\.)*)?)*[\\s:](?:filetype|ft|syntax)\\s*=
+      hvml
+    (?=\\s|:|$)
+  )
+'''
+'patterns': [
+  {
+    'begin': '(<\\?)\\s*([-_a-zA-Z0-9]+)'
+    'captures':
+      '1':
+        'name': 'punctuation.definition.tag.hvml'
+      '2':
+        'name': 'entity.name.tag.hvml'
+    'end': '(\\?>)'
+    'name': 'meta.tag.preprocessor.hvml'
+    'patterns': [
+      {
+        'match': ' ([a-zA-Z-]+)'
+        'name': 'entity.other.attribute-name.hvml'
+      }
+      {
+        'include': '#doublequotedString'
+      }
+      {
+        'include': '#singlequotedString'
+      }
+    ]
+  }
+  {
+    'begin': '(<!)(DOCTYPE)\\s+([:a-zA-Z_][:a-zA-Z0-9_.-]*)'
+    'captures':
+      '1':
+        'name': 'punctuation.definition.tag.hvml'
+      '2':
+        'name': 'keyword.other.doctype.hvml'
+      '3':
+        'name': 'variable.language.documentroot.hvml'
+    'end': '\\s*(>)'
+    'name': 'meta.tag.sgml.doctype.hvml'
+    'patterns': [
+      {
+        'include': '#internalSubset'
+      }
+    ]
+  }
+  {
+    'include': '#comments'
+  }
+  {
+    'begin': '(<)((?:([-_a-zA-Z0-9]+)(:))?([-_a-zA-Z0-9:]+))(?=(\\s[^>]*)?></\\2>)'
+    'beginCaptures':
+      '1':
+        'name': 'punctuation.definition.tag.hvml'
+      '2':
+        'name': 'entity.name.tag.hvml'
+      '3':
+        'name': 'entity.name.tag.namespace.hvml'
+      '4':
+        'name': 'punctuation.separator.namespace.hvml'
+      '5':
+        'name': 'entity.name.tag.localname.hvml'
+    'end': '(>)(</)((?:([-_a-zA-Z0-9]+)(:))?([-_a-zA-Z0-9:]+))(>)'
+    'endCaptures':
+      '1':
+        'name': 'punctuation.definition.tag.hvml'
+      '2':
+        'name': 'punctuation.definition.tag.hvml'
+      '3':
+        'name': 'entity.name.tag.hvml'
+      '4':
+        'name': 'entity.name.tag.namespace.hvml'
+      '5':
+        'name': 'punctuation.separator.namespace.hvml'
+      '6':
+        'name': 'entity.name.tag.localname.hvml'
+      '7':
+        'name': 'punctuation.definition.tag.hvml'
+    'name': 'meta.tag.no-content.hvml'
+    'patterns': [
+      {
+        'include': '#tagStuff'
+      }
+    ]
+  }
+  {
+    'begin': '(</?)(?:([-\\w\\.]+)((:)))?([-\\w\\.:]+)'
+    'captures':
+      '1':
+        'name': 'punctuation.definition.tag.hvml'
+      '2':
+        'name': 'entity.name.tag.namespace.hvml'
+      '3':
+        'name': 'entity.name.tag.hvml'
+      '4':
+        'name': 'punctuation.separator.namespace.hvml'
+      '5':
+        'name': 'entity.name.tag.localname.hvml'
+    'end': '(/?>)'
+    'name': 'meta.tag.hvml'
+    'patterns': [
+      {
+        'include': '#tagStuff'
+      }
+    ]
+  }
+  {
+    'include': '#entity'
+  }
+  {
+    'include': '#bare-ampersand'
+  }
+  {
+    'begin': '<%@'
+    'beginCaptures':
+      '0':
+        'name': 'punctuation.section.embedded.begin.hvml'
+    'end': '%>'
+    'endCaptures':
+      '0':
+        'name': 'punctuation.section.embedded.end.hvml'
+    'name': 'source.java-props.embedded.hvml'
+    'patterns': [
+      {
+        'match': 'page|include|taglib'
+        'name': 'keyword.other.page-props.hvml'
+      }
+    ]
+  }
+  {
+    'begin': '<%[!=]?(?!--)'
+    'beginCaptures':
+      '0':
+        'name': 'punctuation.section.embedded.begin.hvml'
+    'end': '(?!--)%>'
+    'endCaptures':
+      '0':
+        'name': 'punctuation.section.embedded.end.hvml'
+    'name': 'source.java.embedded.hvml'
+    'patterns': [
+      {
+        'include': 'source.java'
+      }
+    ]
+  }
+  {
+    'begin': '<!\\[CDATA\\['
+    'beginCaptures':
+      '0':
+        'name': 'punctuation.definition.string.begin.hvml'
+    'end': ']]>'
+    'endCaptures':
+      '0':
+        'name': 'punctuation.definition.string.end.hvml'
+    'name': 'string.unquoted.cdata.hvml'
+  }
+]
+'repository':
+  'EntityDecl':
+    'begin': '(<!)(ENTITY)\\s+(%\\s+)?([:a-zA-Z_][:a-zA-Z0-9_.-]*)(\\s+(?:SYSTEM|PUBLIC)\\s+)?'
+    'captures':
+      '1':
+        'name': 'punctuation.definition.tag.hvml'
+      '2':
+        'name': 'keyword.other.entity.hvml'
+      '3':
+        'name': 'punctuation.definition.entity.hvml'
+      '4':
+        'name': 'variable.language.entity.hvml'
+      '5':
+        'name': 'keyword.other.entitytype.hvml'
+    'end': '(>)'
+    'patterns': [
+      {
+        'include': '#doublequotedString'
+      }
+      {
+        'include': '#singlequotedString'
+      }
+    ]
+  'bare-ampersand':
+    'match': '&'
+    'name': 'invalid.illegal.bad-ampersand.hvml'
+  'doublequotedString':
+    'begin': '"'
+    'beginCaptures':
+      '0':
+        'name': 'punctuation.definition.string.begin.hvml'
+    'end': '"'
+    'endCaptures':
+      '0':
+        'name': 'punctuation.definition.string.end.hvml'
+    'name': 'string.quoted.double.hvml'
+    'patterns': [
+      {
+        'include': '#entity'
+      }
+      {
+        'include': '#bare-ampersand'
+      }
+    ]
+  'entity':
+    'captures':
+      '1':
+        'name': 'punctuation.definition.constant.hvml'
+      '3':
+        'name': 'punctuation.definition.constant.hvml'
+    'match': '(&)([:a-zA-Z_][:a-zA-Z0-9_.-]*|#[0-9]+|#x[0-9a-fA-F]+)(;)'
+    'name': 'constant.character.entity.hvml'
+  'internalSubset':
+    'begin': '(\\[)'
+    'captures':
+      '1':
+        'name': 'punctuation.definition.constant.hvml'
+    'end': '(\\])'
+    'name': 'meta.internalsubset.hvml'
+    'patterns': [
+      {
+        'include': '#EntityDecl'
+      }
+      {
+        'include': '#parameterEntity'
+      }
+      {
+        'include': '#comments'
+      }
+    ]
+  'parameterEntity':
+    'captures':
+      '1':
+        'name': 'punctuation.definition.constant.hvml'
+      '3':
+        'name': 'punctuation.definition.constant.hvml'
+    'match': '(%)([:a-zA-Z_][:a-zA-Z0-9_.-]*)(;)'
+    'name': 'constant.character.parameter-entity.hvml'
+  'singlequotedString':
+    'begin': '\''
+    'beginCaptures':
+      '0':
+        'name': 'punctuation.definition.string.begin.hvml'
+    'end': '\''
+    'endCaptures':
+      '0':
+        'name': 'punctuation.definition.string.end.hvml'
+    'name': 'string.quoted.single.hvml'
+    'patterns': [
+      {
+        'include': '#entity'
+      }
+      {
+        'include': '#bare-ampersand'
+      }
+    ]
+  'tagStuff':
+    'patterns': [
+      {
+        'captures':
+          '1':
+            'name': 'entity.other.attribute-name.namespace.hvml'
+          '2':
+            'name': 'entity.other.attribute-name.hvml'
+          '3':
+            'name': 'punctuation.separator.namespace.hvml'
+          '4':
+            'name': 'entity.other.attribute-name.localname.hvml'
+        'match': '(?:^|\\s+)(?:([-\\w.]+)((:)))?([-\\w.:]+)\\s*='
+      }
+      {
+        'include': '#doublequotedString'
+      }
+      {
+        'include': '#singlequotedString'
+      }
+    ]
+  'comments':
+    'patterns': [
+      {
+        'begin': '<%--'
+        'captures':
+          '0':
+            'name': 'punctuation.definition.comment.hvml'
+          'end': '--%>'
+          'name': 'comment.block.hvml'
+      }
+      {
+        'begin': '<!--'
+        'captures':
+          '0':
+            'name': 'punctuation.definition.comment.hvml'
+        'end': '-->'
+        'name': 'comment.block.hvml'
+        'patterns': [
+          {
+            'begin': '--(?!>)'
+            'captures':
+              '0':
+                'name': 'invalid.illegal.bad-comments-or-CDATA.hvml'
+          }
+        ]
+      }
+    ]

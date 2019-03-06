@@ -1,0 +1,274 @@
+'.text.hvml':
+  'HVML':
+    'prefix': 'hvml'
+    'body': '''
+<?xml version="1.0" encoding="UTF-8"?>
+<hvml xml:lang="${1:en-US}" xmlns="https://hypervideo.tech/hvml#" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:css="https://www.w3.org/TR/CSS/">
+  $2
+</hvml>
+'''
+  'Actor':
+    'prefix': 'actor'
+    'body': '<actor>$1</actor>'
+  'Budget':
+    'prefix': 'budget'
+    'body': '<budget>$1</budget>'
+  'Category':
+    'prefix': 'category'
+    'body': '<category>${1:Best Supporting Actor}</category>'
+  'CDATA':
+    'prefix': 'cdata'
+    'body': '<![CDATA[$0]]>'
+  'Character':
+    'prefix': 'character'
+    'body': '''
+<character>
+  <name>${1:Irene}</name>
+  <entity>${2:Carey Mulligan}</entity>
+</character>
+'''
+  'Choice':
+    'prefix': 'choice'
+    'body': '''
+<choice xml:id="$1">
+  <name>$2</name>
+  <goto on="${3:duration}" xlink:actuate="${4:onRequest}"${5: xlink:href="${6:https://hypervideo.tech}"}></goto>
+</choice>
+'''
+  'Cinematographer':
+    'prefix': 'cinematographer'
+    'body': '''
+<cinematographer>
+  <entity>${1:Roger Deakins}</entity>
+  ${2:<credit>${3:Director of Photography}</credit>}
+</cinematographer>
+'''
+  'Composer':
+    'prefix': 'composer'
+    'body': '<composer>\n\t<entity>${1:John Williams}</entity>\n</composer>'
+  'Description':
+    'prefix': 'description'
+    'body': '<description type="${1:text}">$1</description>'
+  'Description (HTML)':
+    'prefix': 'description-html'
+    'body': '<description type="xhtml">\n\t<div xmlns="http://www.w3.org/1999/xhtml">\n\t\t<p>$2</p>\n\t</div>\n</description>'
+  'Director':
+    'prefix': 'director'
+    'body': '<director>$1</director>'
+  'Distributor':
+    'prefix': 'distributor'
+    'body': '<distributor>${1:FilmDistrict}</distributor>'
+  'Editor':
+    'prefix': 'editor'
+    'body': '<editor>\n\t<entity>${1:Thelma Schoonmaker}</entity>\n</editor>'
+  'Entity':
+    'prefix': 'entity'
+    'body': '<entity>\n\t<name>$1</name>\n</entity>'
+  'Episode':
+    'prefix': 'episode'
+    'body': '<episode>${1:1}</episode>'
+  'Finance':
+    'prefix': 'finance'
+    'body': '''
+<finance>
+  <budget>${1:15000000}</budget>
+  ${2:<net>$3</net>}
+  ${4:<gross>$5</gross>}
+</finance>
+'''
+  'From':
+    'prefix': 'from'
+    'body': '<from>${1:Austin Film Critics Association}</from>'
+  'Genre':
+    'prefix': 'genre'
+    'body': '''
+<genre>
+  <tag>${1:neo-noir}</tag>
+  ${2:<tag>${3:crime}</tag>}
+  ${4:<tag>${5:thriller}</tag>}
+</genre>
+'''
+  'Glossary':
+    'prefix': 'glossary'
+    'body': '''
+<glossary xml:id="$1" for="$2" party="${3:1st}">
+  <title>$4</title>
+  $5
+</glossary>
+'''
+  'Gross':
+    'prefix': 'gross'
+    'body': '<gross>$1</gross>'
+  'Group':
+    'prefix': 'group'
+    'body': '<group${1: xml:id="$2"$}${3: type="${4:curation}"}>\n\t$5\n</group>'
+  'In-video Link (Choice)':
+    'prefix': 'link'
+    'body': '''
+<choice xml:id="$1">
+  <name type="xhtml">
+    <div xmlns="http://www.w3.org/1999/xhtml">$2</div>
+  </name>
+  <goto xlink:href="${3:https://hypervideo.tech}" on="duration" xlink:actuate="onRequest" width="${4:50%}" height="${5:25%}" css:font-size="${6:1vw}"></goto>
+</choice>
+'''
+  'Link (Relation)':
+    'prefix': 'linkrel'
+    'body': '<link rel="${1:glossary}" href="${2:glossary.hvml}" />'
+  'Meta':
+    'prefix': 'meta'
+    'body': '<meta>\n\t<link rel="${1:glossary}" href="${2:glossary.hvml}" />\n</meta>'
+  'Name':
+    'prefix': 'name'
+    'body': '<name>$1</name>'
+  'Name (Expanded)':
+    'prefix': 'name+'
+    'body': '<name>\n\t<family-name>$1</family-name>\n\t<given-name>$2</given-name>\n</name>'
+  'Net':
+    'prefix': 'net'
+    'body': '<net>$1</net>'
+  'Presentation':
+    'prefix': 'presentation'
+    'body': '<presentation>\n\t$1\n</presentation>'
+  'Producer':
+    'prefix': 'producer'
+    'body': '<producer>$1</producer>'
+  'Production':
+    'prefix': 'production'
+    'body': '<production></production>'
+  'Published':
+    'prefix': 'published'
+    'body': '<published>${1:20XX-01-01}</published>'
+  'Rating':
+    'prefix': 'rating'
+    'body': '<rating code="${1:R}" />'
+  'Rating (Expanded)':
+    'prefix': 'rating+'
+    'body': '''
+<rating code="${1:R}" maturity="${2:0.75}">
+  <entity>
+    <name>${3:Motion Picture Association of America}</name>
+    ${4:<nickname>${5:MPAA}</nickname>}
+    ${6:<site${7: title="${8:MPAA.org}"}>${9:https://www.mpaa.org}</site>}
+  </entity>
+  <title>${10:Restricted}</title>
+  ${11:<subtitle>{$12:Children Under 17 Require Accompanying Parent or Adult Guardian}</subtitle>}
+  <description>${13:An R-rated motion picture, in the view of the Rating Board, contains some adult material. An R-rated motion picture may include adult themes, adult activity, hard language, intense or persistent violence, sexually-oriented nudity, drug abuse or other elements, so that parents are counseled to take this rating very seriously. Children under 17 are not allowed to attend R-rated motion pictures unaccompanied by a parent or adult guardian. Parents are strongly urged to find out more about R-rated motion pictures in determining their suitability for their children. Generally, it is not appropriate for parents to bring their young children with them to R-rated motion pictures.}</description>
+  <reason type="${14:violence profanity nudity}">${15:strong brutal bloody violence, language and some nudity}</reason>
+</rating>
+'''
+  'Recognition':
+    'prefix': 'recognition'
+    'body': '''
+<recognition datetime="${1:20XX}" type="${2:award}" result="${3:win}">
+  <from>${4:Austin Film Critics Association}</from>
+  <to>
+    <entity>${5:Nicolas Winding Refn}</entity>
+    <category>${6:Best Director}</category>
+  </to>
+</recognition>
+'''
+  'Recorded':
+    'prefix': 'recorded'
+    'body': '<recorded>${1:20XX-01-01}</recorded>'
+  'Runtime':
+    'prefix': 'runtime'
+    'body': '<runtime>${1:90}</runtime>'
+  'Series':
+    'prefix': 'series'
+    'body': '<series${1: xml:id="${2:season-01}"}>\n\t<video>$3</video>\n</series>'
+  'Showing (Online Premiere)':
+    'prefix': 'online'
+    'body': '''
+<showing scope="release" type="internet" admission="${1:public}" datetime="${2:20XX-01-21}" locale="${3:en-US}">
+  <venue type="site">
+    <entity site="${4:https://www.youtube.com/}">${5:YouTube}</entity>
+    <uri>${6:https://www.youtube.com/watch?v=${7:xyz}}</uri>
+    <title>$8</title>
+  </venue>
+  <medium>digital</medium>
+</showing>
+'''
+  'Showing (Film Festival Premiere)':
+    'prefix': 'festival'
+    'body': '''
+<showing scope="release" type="${1:theatrical}" admission="${2:public}" datetime="${3:20XX-01-21}" locale="${4:en-FR}">
+  <function>
+    <name${5: xml:lang="${6:fr}"}>${7:Festival de Cannes}</name>
+    ${8:<nickname>${9:Cannes}</nickname>}
+    ${10:<uri>${11:http://www.festival-cannes.com/}</uri>}
+  </function>
+  <medium>${12:film}</medium>
+</showing>
+'''
+  'Showing (Generic Screening)':
+    'prefix': 'screening'
+    'body': '''
+<showing scope="screening" type="${1:theatrical}" admission="${2:public}" datetime="${3:20XX-01-01}" locale="${4:en-US}">
+  <venue>
+    <entity>$5</entity>
+  </venue>
+  ${6:<medium>${7:film}</medium>}
+</showing>
+'''
+  'Starring':
+    'prefix': 'starring'
+    'body': '''
+<starring>
+  <character>
+    <name>${1:Driver}</name>
+    <entity>${2:Ryan Gosling}</entity>
+  </character>
+</starring>
+'''
+  'Studio':
+    'prefix': 'studio'
+    'body': '<studio>\n\t<entity>${1:No Spoon Productions}</entity>\n</studio>'
+  'Tag':
+    'prefix': 'tag'
+    'body': '<tag>${1:neo-noir}</tag>'
+  'Title':
+    'prefix': 'title'
+    'body': '<title>$1</title>'
+  'To':
+    'prefix': 'to'
+    'body': '''
+<to>
+  <entity>${1:Nicolas Winding Refn}</entity>
+  <category>${2:Best Director}</category>
+</to>
+'''
+  'Venue':
+    'prefix': 'venue'
+    'body': '''
+<venue type="${4:site}">
+  <entity site="${5:https://www.youtube.com/}">${6:YouTube}</entity>
+  <uri>${7:https://www.youtube.com/watch?v=${8:xyz}}</uri>
+  <title>$9</title>
+</venue>
+'''
+  'Verdict':
+    'prefix': 'verdict'
+    'body': '''
+<verdict xml:id="$1" code="${2:Ma}" rank="${3:1}">
+  <title>${4:Masterpiece}</title>$5
+</verdict>
+'''
+  'Video':
+    'prefix': 'video'
+    'body': '<video type="${1:personal}" xml:id="$2">\n\t$3\n</video>'
+  'Work':
+    'prefix': 'work'
+    'body': '''
+<work type="${1:screenplay}"${2: xml:id="$3"}>
+  <title>$4</title>
+  <published>$5</published>
+  <entity>$6</entity>
+  ${7:<credit>${8:Screenplay by}</credit>}
+  ${9:<item-title>$10</item-title>}
+  ${11:<link rel="${12:derived-from}" href="#$13" />}
+</work>
+'''
+  'Writer':
+    'prefix': 'writer'
+    'body': '<writer>$1</writer>'

@@ -3,7 +3,7 @@ describe "XML grammar", ->
 
   beforeEach ->
     waitsForPromise ->
-      atom.packages.activatePackage("language-xml")
+      atom.packages.activatePackage("language-hvml")
 
     runs ->
       grammar = atom.grammars.grammarForScopeName("text.xml")
